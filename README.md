@@ -6,13 +6,13 @@ These are **synthetic fixtures**. No infrastructure is deployed. The remediation
 
 ## Inspect the examples
 
-Open the [demo pull requests](https://github.com/tryflare-ai/actions-demo/pulls), inspect the diff, then read the Flare comment and workflow logs. Live results require the repository's dedicated Flare API key to be configured. Until a run finishes successfully, expected behavior is a description, not a measured result.
+Open the [demo pull requests](https://github.com/tryflare-ai/actions-demo/pulls), inspect the diff, then read the Flare comment and workflow logs. All three examples were run against production on October 5, 2026 using a dedicated encrypted API key. The risky change produced one high-severity finding on the changed line; the repair and harmless edit produced no findings. These three synthetic examples illustrate behavior, not general accuracy.
 
 | Example | Change | Expected behavior |
 | --- | --- | --- |
-| Risky change | Viewer role becomes Editor | Explain the permission expansion and suggest a narrower role |
-| Repair | Editor role becomes Viewer | Do not report the removed broad grant as a new risk |
-| Harmless edit | Change a comment, retain Viewer | No configuration-risk finding |
+| [Risky change](https://github.com/tryflare-ai/actions-demo/pull/1#issuecomment-6005282638) | Viewer role becomes Editor | Explain the permission expansion and suggest a narrower role |
+| [Repair](https://github.com/tryflare-ai/actions-demo/pull/2#issuecomment-6005281135) | Editor role becomes Viewer | Do not report the removed broad grant as a new risk |
+| [Harmless edit](https://github.com/tryflare-ai/actions-demo/pull/3#issuecomment-6005281664) | Change a comment, retain Viewer | No configuration-risk finding |
 
 The workflow uses `fail-on: none` so reviewers can inspect results without blocking the demo. A green job alone does not prove no findings: missing credentials, quota warnings and skipped reviews must be checked in logs. The workflow only runs for same-repository PRs; forks do not receive the demo secret.
 

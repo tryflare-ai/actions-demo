@@ -18,10 +18,9 @@ jobs:
           persist-credentials: false
       - name: Review the example diff
         id: flare
-        uses: tryflare-ai/pr-security-check@668ba36d981be0296ea81cc100a2b6491c9d0af7 # v1.1.0
+        uses: tryflare-ai/pr-security-check@c7bce91bad6b0cc1ebff7c1dde93121b71abd4c4 # v1.1.1
         with:
           token: ${{ secrets.FLARE_API_KEY }}
-          api-url: https://tryflare.ai/api/webhooks/pr-check
           fail-on: none
       - name: Explain the result
         env:
