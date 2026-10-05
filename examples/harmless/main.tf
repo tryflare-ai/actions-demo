@@ -1,4 +1,4 @@
-# Synthetic review fixture. Never deploy this configuration.
+# Synthetic read-only reporting fixture. Never deploy this configuration.
 resource "google_project_iam_member" "reporting" {
   project = "flare-demo-project"
   role    = "roles/viewer"
