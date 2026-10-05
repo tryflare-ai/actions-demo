@@ -1,0 +1,33 @@
+name: Flare PR security demo
+on:
+  pull_request:
+    paths:
+      - 'examples/**/*.tf'
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  review:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Review the example diff
+        id: flare
+        uses: tryflare-ai/pr-security-check@668ba36d981be0296ea81cc100a2b6491c9d0af7 # v1.1.0
+        with:
+          token: ${{ secrets.FLARE_API_KEY }}
+          api-url: https://tryflare.ai/api/webhooks/pr-check
+          fail-on: none
+      - name: Explain the result
+        env:
+          FINDINGS: ${{ steps.flare.outputs.findings-count }}
+          CRITICAL: ${{ steps.flare.outputs.critical-count }}
+          HIGH: ${{ steps.flare.outputs.high-count }}
+        run: |
+          printf '### Flare demo run\n\nFindings: %s | Critical: %s | High: %s\n\n' "$FINDINGS" "$CRITICAL" "$HIGH" >> "$GITHUB_STEP_SUMMARY"
+          printf 'This demo uses fail-on: none. A green job is not proof of a clean review. Read the Flare PR comment and logs for findings, skipped runs, or quota warnings.\n' >> "$GITHUB_STEP_SUMMARY"
